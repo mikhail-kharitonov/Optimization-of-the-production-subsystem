@@ -6,10 +6,10 @@ from src.converters.complicated import Complicated
 from src.converters.dedicated import Dedicated
 from src.api_models.converter_type import ConverterType
 
-m = 3
-n = 3
-resource = np.array([1.0, 10, 10]) #np.random.uniform(1, 5, size=m),
-technological_coefficients = np.random.uniform(10, 40, size=(n+1, m)) #np.ones((n+1, m)) # np.random.uniform(10, 40, size=(n+1, m))
+m = 5
+n = 10
+resource = np.array([1., 100, 100, 100, 100]) #np.random.uniform(1, 5, size=m),
+technological_coefficients = np.ones((n+1, m)) #np.random.uniform(10, 40, size=(n+1, m)) # np.random.uniform(10, 40, size=(n+1, m))
 
 input_data = {"number_production_factors": m,
               "structure_complexity": n,
