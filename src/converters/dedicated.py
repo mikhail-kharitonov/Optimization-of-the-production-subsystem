@@ -1,5 +1,5 @@
 import numpy as np
-from src.api_models.input_model import InputModel
+from src.api_models.input_models import InputModel
 class Dedicated:
 
     def __init__(self, input_model: InputModel):

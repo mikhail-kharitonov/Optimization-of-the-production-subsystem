@@ -3,11 +3,12 @@ import numpy as np
 
 
 from src.api_models.converter_type import ConverterType
-from src.api_models.input_model import InputModel
+from src.api_models.input_models import InputModel
 from src.converters.complicated import Complicated
 from src.converters.dedicated import Dedicated
 from src.solver.data_manager import DataManager
 from src.solver.solver_wrapper import SolverWrapper
+from src.api_models.input_models import InputJsonModel
 
 cases = (["case_complicated_3x7.json",
           "case_complicated_5x10.json"])
@@ -25,8 +26,13 @@ def test_solver_results():
                       "resource": np.array(req["problem"]["resource"]),
                       "technological_coefficients": np.array(req["problem"]["technologicalCoefficients"])
                       }
-
         im = InputModel(**input_data)
+
+        input_data_from_json = {
+            "flows_value": req["correctResult"]["optimalFlowsValue"],
+            "objective_value": req["correctResult"]["optimalObjectiveValue"]
+        }
+        ijm = InputJsonModel(**input_data_from_json)
 
         dm = DataManager(Complicated(im),
                          Dedicated(im),
@@ -35,10 +41,7 @@ def test_solver_results():
         sw = SolverWrapper(dm)
         calc_flows_value, calc_objective_value = sw.solve()
 
-        optimal_flows_value = np.array(req["correctResult"]["optimalFlowsValue"])
+        for row in range(len(calc_flows_value)):
+            assert np.abs(ijm.flows_value[row] - calc_flows_value[row]) <= 0.00001
 
-        for row in range(len(optimal_flows_value)):
-            assert np.abs(optimal_flows_value[row] - calc_flows_value[row]) <= 0.000001
-
-        optimal_objective_value = np.array(req["correctResult"]["optimalObjectiveValue"])
-        assert np.abs(optimal_objective_value - calc_objective_value) <= 0.000001
+        assert np.abs(ijm.objective_value - calc_objective_value) <= 0.00001

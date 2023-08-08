@@ -8,3 +8,8 @@ class InputModel(NumpyModel):
     resource: pnd.Np1DArrayFp32
     technological_coefficients: pnd.Np2DArrayFp32
 
+
+class InputJsonModel(NumpyModel):
+    flows_value: pnd.Np1DArrayFp32
+    objective_value: float
+
