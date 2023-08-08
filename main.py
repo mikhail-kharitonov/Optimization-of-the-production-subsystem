@@ -1,5 +1,5 @@
 import numpy as np
-from src.api_models.input_model import InputModel
+from src.api_models.input_models import InputModel
 from src.solver.solver_wrapper import SolverWrapper
 from src.solver.data_manager import DataManager
 from src.converters.complicated import Complicated
