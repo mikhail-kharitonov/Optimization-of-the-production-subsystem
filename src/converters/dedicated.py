@@ -1,6 +1,9 @@
 import numpy as np
 from src.api_models.input_models import InputModel
 class Dedicated:
+    """
+    ПЕРЕПИСАТЬ!!!!
+    """
 
     def __init__(self, input_model: InputModel):
         self.__m = input_model.number_production_factors
@@ -51,25 +54,25 @@ class Dedicated:
 
         for i in np.arange (1,self.__n):
             for l in np.arange (0,i):
-                self.__cm[self.__m+self.__m*(i-1)][self.__calc_n_i_j(l,i)] = - float(self.__a.sum(axis=1)[i] / self.__a[i][0])
+                self.__cm[self.__m+self.__m*(i-1)][self.__calc_n_i_j(l, i)] = - float(self.__a.sum(axis=1)[i] / self.__a[i][0])
 
             for j in np.arange(i+1,self.__n+1):
-                self.__cm[self.__m+self.__m*(i-1)][self.__calc_n_i_j(i,j)] = 1.0
+                self.__cm[self.__m+self.__m*(i-1)][self.__calc_n_i_j(i, j)] = 1.0
             self.__cm[self.__m+self.__m*(i-1)][self.__calc_n_f(i)] = 1.0
 
             for k in np.arange(1,self.__m):
                 self.__cm[self.__m+self.__m*(i-1)+k][self.__calc_n_i_j(self.__n-1,self.__n)+(k-1)*self.__n+i] = -(
-                     float(self.__a.sum(axis=1)[i]/self.__a[i][0]))
-                for j in np.arange (i+1,self.__n+1):
-                    self.__cm[self.__m+self.__m*(i-1)+k][self.__calc_n_i_j(i,j)] = 1.0
+                     float(self.__a.sum(axis=1)[i] / self.__a[i][0]))
+                for j in np.arange(i+1,self.__n+1):
+                    self.__cm[self.__m+self.__m*(i-1)+k][self.__calc_n_i_j(i, j)] = 1.0
                 self.__cm[self.__m+self.__m*(i-1)+k][self.__calc_n_f(i)] = 1.0
 
-        for l in np.arange (0,self.__n):
+        for l in np.arange(0,self.__n):
             self.__cm[self.__u-self.__m][self.__calc_n_i_j(l,self.__n)] = \
                  - float(self.__a.sum(axis=1)[self.__n]/self.__a[self.__n][0])
         self.__cm[self.__u-self.__m][self.__calc_n_f(self.__n)] = 1.0
 
-        for k in np.arange (1,self.__m):
+        for k in np.arange(1,self.__m):
             self.__cm[self.__u-self.__m+k][self.__calc_n_i_j(self.__n-1,self.__n)+(k-1)*self.__n+self.__n] =\
                  - float(self.__a.sum(axis=1)[self.__n]/self.__a[self.__n][k])
             self.__cm[self.__u-self.__m+k][self.__calc_n_f(self.__n)] = 1.0

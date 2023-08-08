@@ -1,4 +1,3 @@
-import numpy as np
 import cvxpy as cp
 
 from src.converters.complicated import Complicated
@@ -32,8 +31,10 @@ class DataManager:
         match self.converter_type:
 
             case self.converter_type.complicated:
-                objective_function_coefficients = self.complicated.objective_function_coefficients
-                constraint_matrix = self.complicated.constraint_matrix
+                objective_function_coefficients = (
+                    self.complicated.objective_function_coefficients)
+                constraint_matrix = (
+                    self.complicated.constraint_matrix)
                 free_members = self.complicated.free_members
 
                 self.component_problem[ComponentProblemType.objective] = (
@@ -47,28 +48,22 @@ class DataManager:
             case self.converter_type.dedicated:
                 objective_function_coefficients = (
                     self.dedicated.objective_function_coefficients)
-
                 constraint_matrix = (
                     self.dedicated.constraint_matrix)
-
                 free_members = (
                     self.dedicated.free_members)
 
                 self.component_problem[ComponentProblemType.objective] = (
                     objective_function_coefficients)
-
                 self.component_problem[ComponentProblemType.constraint_matrix] = (
                     constraint_matrix)
-
                 self.component_problem[ComponentProblemType.free_members] = (
                     free_members)
-
                 return self.component_problem
 
     def __build_objective_function(self):
         objective = (
             self.__build_component_problem)[ComponentProblemType.objective]
-
         return cp.sum(
                     cp.multiply(objective,
                                 self.variables)
@@ -77,12 +72,9 @@ class DataManager:
     def __build_constraints(self):
         constraint_matrix = (
             self.__build_component_problem)[ComponentProblemType.constraint_matrix]
-
         free_members = (
             self.__build_component_problem)[ComponentProblemType.free_members]
-
         variables = self.variables
-
         return [constraint_matrix @ variables <= free_members,
                 variables >= 0]
 

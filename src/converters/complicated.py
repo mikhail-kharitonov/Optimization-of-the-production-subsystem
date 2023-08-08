@@ -5,6 +5,7 @@ from src.api_models.input_models import InputModel
 class Complicated:
     """
     Структура сложного преобразователя
+    НУЖНО ПЕРЕПИСАТЬ!!!!
     """
     def __init__(self, input_model: InputModel):
         self.__m = input_model.number_production_factors
@@ -39,15 +40,12 @@ class Complicated:
         return int(self.__p - 1 - (self.__m - 1) + i - 1)
 
     def __build_objective_function_coefficients(self):
-        for i in np.arange(0, self.__p):
-            if i == self.__p - 1:
-                self.__ofc[i] = 1.
+        self.__ofc[self.__p - 1] = 1.
         return self.__ofc
 
     def __build_free_members(self):
-        for i in np.arange(0,self.__u):
-            if i < self.__m:
-                self.__fm[i] = self.__resource[i]
+        for i in np.arange(0,self.__m):
+            self.__fm[i] = self.__resource[i]
         return self.__fm
 
     def __build_constraint_matrix(self):
