@@ -1,0 +1,28 @@
+import cvxpy as cp
+from src.solver.data_manager import DataManager
+
+
+class SolverWrapper:
+
+    def __init__(self,
+                 dm: DataManager):
+        self.dm = dm
+
+    def solve(self):
+        variables = self.dm.variables
+        objective = self.dm.objective
+        constraints = self.dm.constraints
+
+        return self.__solve(variables, constraints, objective)
+
+    def __solve(self, variables, constraints, objective):
+        self.prob = cp.Problem(
+                objective=cp.Maximize(objective),
+                constraints=constraints
+            )
+        self.prob.solve(solver=cp.SCIPY)
+        if self.prob.solution.status == 'optimal':
+            return variables.value, objective.value
+        else:
+            print('The solver could not find an optimal solution')
+
