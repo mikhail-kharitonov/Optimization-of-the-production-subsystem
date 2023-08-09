@@ -18,35 +18,66 @@ class Dedicated:
 
     @property
     def __u(self):
+        """
+        Количество ограничений в ЗЛП
+        :return: int
+        """
         return int(self.__m * (self.__n + 1))
 
     @property
     def __p(self):
+        """
+        Количество переменных в ЗЛП
+        :return: int
+        """
         return int(((self.__n * (self.__n + 2 * self.__m + 1)) / 2))
 
     def __calc_location_flow_type_n_from_node_i_to_j(self, i, j):
+        """
+        Вычисляется номер компонеты потока N^i_j в векторе переменных
+        :return: int
+        """
         return int((self.__n - 1) * i - ((i - 1) * i) / 2 + j - 1)
 
     def __calc_location_flow_type_r_from_node_l_to_j(self, j, i):
+        """
+        Вычисляется номер компонеты потока R^l_j в векторе переменных
+        :return: int
+        """
         n_ij = self.__calc_location_flow_type_n_from_node_i_to_j
         return int(n_ij(self.__n - 1, self.__n) + (j - 1) * self.__n + i)
 
     def __calc_location_flow_type_n_from_node_i_to_f(self, i):
+        """
+        Вычисляется номер компонеты потока N^i_F в векторе переменных
+        :return: int
+        """
         return int((self.__p - 1 - self.__n + i))
 
     def __build_objective_function_coefficients(self):
-        for i in np.arange(0, self.__p):
-            if (i >= self.__p - self.__n) and (i <= self.__p - 1):
-                self.__ofc[i] = 1.
+        """
+        Построение вектора коэффициентов целевой функции ЗЛП
+        :return: List[float]
+        """
+        for i in np.arange(self.__p - self.__n, self.__p):
+            self.__ofc[i] = 1.
         return self.__ofc
 
     def __build_free_members(self):
+        """
+        Построение вектора правых частей ЗЛП
+        :return: List[float]
+        """
         for i in np.arange(0,self.__u):
             if i < self.__m:
                 self.__fm[i] = self.__resource[i]
         return self.__fm
 
     def __build_constraint_matrix(self):
+        """
+        Построение матрицы ЗЛП
+        :return: List[float,float]
+        """
         n = self.__n
         m = self.__m
         a = self.__a
