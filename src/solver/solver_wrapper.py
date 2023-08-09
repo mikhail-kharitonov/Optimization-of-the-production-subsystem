@@ -5,13 +5,13 @@ from src.solver.data_manager import DataManager
 class SolverWrapper:
 
     def __init__(self,
-                 dm: DataManager):
-        self.dm = dm
+                 data_manager: DataManager):
+        self.data_manager = data_manager
 
     def solve(self):
-        variables = self.dm.variables
-        objective = self.dm.objective
-        constraints = self.dm.constraints
+        variables = self.data_manager.variables
+        objective = self.data_manager.objective
+        constraints = self.data_manager.constraints
 
         return self.__solve(variables, constraints, objective)
 
