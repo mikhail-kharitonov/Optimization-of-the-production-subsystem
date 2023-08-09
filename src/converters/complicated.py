@@ -5,7 +5,6 @@ from src.api_models.input_models import InputModel
 class Complicated:
     """
     Структура сложного преобразователя
-    НУЖНО ПЕРЕПИСАТЬ!!!!
     """
     def __init__(self, input_model: InputModel):
         self.__m = input_model.number_production_factors
@@ -31,10 +30,8 @@ class Complicated:
         return int((self.__n - 1) * i - ((i - 1) * i) / 2 + j - 1)
 
     def __calc_location_flow_type_r_from_node_l_to_j(self, l, i):
-        return int(
-            self.__calc_location_flow_type_n_from_node_i_to_j(self.__n - 1,
-                                                              self.__n) +
-                   (l - 1) * self.__n + i)
+        n_ij = self.__calc_location_flow_type_n_from_node_i_to_j
+        return int(n_ij(self.__n - 1,self.__n) + (l - 1) * self.__n + i)
 
     def __calc_location_flow_type_n_from_node_i_to_f(self, i):
         return int(self.__p - 1 - (self.__m - 1) - (self.__n + 1) + i)
